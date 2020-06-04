@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Image, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
-export default function HomeScreen() {
+export default function DeckList({ navigation }) {
   return (
     <View style={styles.container}>
       <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
@@ -27,8 +27,8 @@ export default function HomeScreen() {
         </View>
 
         <View style={styles.helpContainer}>
-          <TouchableOpacity onPress={handleHelpPress} style={styles.helpLink}>
-            <Text style={styles.helpLinkText}>helpLink</Text>
+          <TouchableOpacity onPress={() => navigation.navigate('SingleDeck')} style={styles.helpLink}>
+            <Text style={styles.helpLinkText}>Deck 1</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -44,12 +44,13 @@ export default function HomeScreen() {
   );
 }
 
-HomeScreen.navigationOptions = {
+DeckList.navigationOptions = {
   header: null,
 };
 
 function handleHelpPress() {
   alert('click!')
+  
 }
 
 const styles = StyleSheet.create({
@@ -139,4 +140,23 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#2e78b7',
   },
+
+  
+  button: {
+    backgroundColor: '#fdfdfd',
+    paddingHorizontal: 15,
+    paddingVertical: 15,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderBottomWidth: 0,
+    borderColor: '#ededed',
+  },
+  buttonIconContainer: {
+    marginRight: 12,
+  },
+  buttonText: {
+    fontSize: 15,
+    alignSelf: 'flex-start',
+    marginTop: 1,
+  },
+
 });

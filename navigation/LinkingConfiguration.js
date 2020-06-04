@@ -6,9 +6,10 @@ export default {
     Root: {
       path: 'root',
       screens: {
-        Home: 'home',
-        Links: 'links',
+        Decks: 'decks',
+        NewDeck: 'newdeck',        
       },
     },
+    SingleDeck: 'singledeck'
   },
 };
