@@ -41,7 +41,7 @@ function getHeaderTitle(route) {
 
   switch (routeName) {
     case 'Decks':
-      return 'My Flashcard Decks';
+      return 'My Flashcards';
     case 'NewDeck':
       return 'Create a new deck';
   }

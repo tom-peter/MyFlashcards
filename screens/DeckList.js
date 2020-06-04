@@ -1,46 +1,64 @@
 import React, { Component } from 'react';
 import { Image, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import { ScrollView, RectButton } from 'react-native-gesture-handler';
+import { connect } from 'react-redux';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { getDecks } from '../utils/api'
+import { receiveDecks } from '../actions'
 
-export default class DeckList extends Component {
-  state = {
-    decks: null
-  }
+class DeckList extends Component {
+  // state = {
+  //   decks: null
+  // }
 
   componentDidMount() {
     
-    getDecks().then((decks) => this.setState({ decks }));
+    getDecks()
+    .then((decks) => {
+      this.props.dispatch(receiveDecks(decks))      
+    });
     
+  }
+
+  listDecks() {
+    const { navigation, decks } = this.props;
+
+    return (
+      <View>
+      { Object.keys(decks).map((id) => (
+        <RectButton key={id} style={[styles.button]} onPress={() => alert('click!')}>
+          <View style={{ flexDirection: 'row' }}>
+            <View style={styles.buttonIconContainer}>
+              <MaterialCommunityIcons name="cards" size={32} color="rgba(0,0,0,0.35)" />
+            </View>
+            <View style={styles.buttonTextContainer}>
+              <Text style={styles.buttonText}>{decks[id].title}</Text>
+              <Text style={styles.buttonText}>{decks[id].questions.length} card{decks[id].questions.length > 1 && 's'}</Text>
+            </View>
+          </View>
+        </RectButton>
+      ))}  
+      </View>
+    )
   }
 
   render() {
 
   console.log('DeckList props: ', this.props);
-  const navigation = this.props.navigation;
-  console.log('DeckList state decks: ', this.state.decks);
+  const { navigation, decks } = this.props;
+  // console.log('DeckList state decks: ', this.state.decks);
 
 
   return (
     <View style={styles.container}>
       <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
         <View style={styles.welcomeContainer}>
-          <Image
-            source={
-              __DEV__
-                ? require('../assets/images/robot-dev.png')
-                : require('../assets/images/robot-prod.png')
-            }
-            style={styles.welcomeImage}
-          />
+          <Text style={styles.getStartedText}>Decks</Text>
+          <Text style={styles.getStartedText}>Select a deck or create a new one.</Text>
         </View>
 
-        <View style={styles.getStartedContainer}>
-
-          <Text style={styles.getStartedText}>{this.state.decks !== null && 'Yess!'}</Text>
-
-        </View>
+        {decks !== null && this.listDecks()}
 
         <View style={styles.helpContainer}>
           <TouchableOpacity onPress={() => navigation.navigate('SingleDeck')} style={styles.helpLink}>
@@ -49,13 +67,6 @@ export default class DeckList extends Component {
         </View>
       </ScrollView>
 
-      <View style={styles.tabBarInfoContainer}>
-        <Text style={styles.tabBarInfoText}>
-         This is a tab bar. You can edit it in: 
-         navigation/BottomTabNavigator.js
-        </Text>
-
-      </View>
     </View>
   );
 
@@ -178,3 +189,10 @@ const styles = StyleSheet.create({
   },
 
 });
+
+function mapStateToProps(state) {
+  console.log('mapStateToProps: ', state);
+  return ( state === null ) ? { decks: null } : { decks: state };
+}
+
+export default connect(mapStateToProps)(DeckList)
