@@ -1,8 +1,27 @@
-import * as React from 'react';
+import React, { Component } from 'react';
 import { Image, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
-export default function DeckList({ navigation }) {
+import { getDecks } from '../utils/api'
+
+export default class DeckList extends Component {
+  state = {
+    decks: null
+  }
+
+  componentDidMount() {
+    
+    getDecks().then((decks) => this.setState({ decks }));
+    
+  }
+
+  render() {
+
+  console.log('DeckList props: ', this.props);
+  const navigation = this.props.navigation;
+  console.log('DeckList state decks: ', this.state.decks);
+
+
   return (
     <View style={styles.container}>
       <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
@@ -19,11 +38,8 @@ export default function DeckList({ navigation }) {
 
         <View style={styles.getStartedContainer}>
 
-          <Text style={styles.getStartedText}>Open up the code for this screen:</Text>
+          <Text style={styles.getStartedText}>{this.state.decks !== null && 'Yess!'}</Text>
 
-          <Text style={styles.getStartedText}>
-            Change any of the text, save the file, and your app will automatically reload.
-          </Text>
         </View>
 
         <View style={styles.helpContainer}>
@@ -42,6 +58,8 @@ export default function DeckList({ navigation }) {
       </View>
     </View>
   );
+
+  }
 }
 
 DeckList.navigationOptions = {
@@ -141,7 +159,7 @@ const styles = StyleSheet.create({
     color: '#2e78b7',
   },
 
-  
+
   button: {
     backgroundColor: '#fdfdfd',
     paddingHorizontal: 15,
