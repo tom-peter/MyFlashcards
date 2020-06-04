@@ -27,7 +27,11 @@ class DeckList extends Component {
     return (
       <View>
       { Object.keys(decks).map((id) => (
-        <RectButton key={id} style={[styles.button]} onPress={() => alert('click!')}>
+        <RectButton 
+          key={id} 
+          style={[styles.button]} 
+          onPress={() => navigation.navigate('SingleDeck', { deckID : id})}
+        >
           <View style={{ flexDirection: 'row' }}>
             <View style={styles.buttonIconContainer}>
               <MaterialCommunityIcons name="cards" size={32} color="rgba(0,0,0,0.35)" />
@@ -47,7 +51,6 @@ class DeckList extends Component {
 
   console.log('DeckList props: ', this.props);
   const { navigation, decks } = this.props;
-  // console.log('DeckList state decks: ', this.state.decks);
 
 
   return (
@@ -60,13 +63,7 @@ class DeckList extends Component {
 
         {decks !== null && this.listDecks()}
 
-        <View style={styles.helpContainer}>
-          <TouchableOpacity onPress={() => navigation.navigate('SingleDeck')} style={styles.helpLink}>
-            <Text style={styles.helpLinkText}>Deck 1</Text>
-          </TouchableOpacity>
-        </View>
       </ScrollView>
-
     </View>
   );
 
@@ -76,11 +73,6 @@ class DeckList extends Component {
 DeckList.navigationOptions = {
   header: null,
 };
-
-function handleHelpPress() {
-  alert('click!')
-  
-}
 
 const styles = StyleSheet.create({
   container: {

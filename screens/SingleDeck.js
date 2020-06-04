@@ -1,14 +1,29 @@
-import * as React from 'react';
+import React, { Component } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { connect } from 'react-redux';
 
 import Button from '../components/Button';
 
-export default function SingleDeck({ navigation }) {
+class SingleDeck extends Component {
+
+  render() {
+
+    const { navigation, decks } = this.props;
+    const deckID = this.props.route.params.deckID;
+    const deck = decks[deckID];
+
+    // set the header based on the deck name
+    navigation.setOptions({ title: `${deck.title} deck` })
+
+    // console.log('single props: ', this.props);
+    console.log('single / deckID: ', deckID);
+    console.log('single deck: ', deck);
+
   return (
     <View style={styles.container}>
-        <View>
-          <Text>Sample text</Text>
-        </View>
+      <View>
+        <Text style={styles.buttonText}>{deck.questions.length} card{deck.questions.length > 1 && 's'} in the deck</Text>
+      </View>
       <View style={styles.buttonContainer} >
         <Button
           icon="ios-chatboxes"
@@ -23,14 +38,10 @@ export default function SingleDeck({ navigation }) {
           onPress={() => navigation.navigate('Quiz')}
         />
       </View>
-        <View>
-          <TouchableOpacity onPress={() => alert('click!')} >
-            <Text>Yes</Text>
-          </TouchableOpacity>
-        </View>
     </View>
     
   );
+}
 }
 
 const styles = StyleSheet.create({
@@ -44,3 +55,12 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
 })
+
+function mapStateToProps(state) {
+  console.log('mapStateToProps: ', state);
+  
+
+  return ( state === null ) ? { decks: null } : { decks: state };
+}
+
+export default connect(mapStateToProps)(SingleDeck)
