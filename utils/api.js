@@ -44,8 +44,8 @@ export async function saveDeckTitle(title) {
         }
       })
     );
-  } catch (err) {
-    console.log(err);
+  } catch (error) {
+    console.log(error);
   }
 }
 

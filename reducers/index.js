@@ -1,4 +1,4 @@
-import { RECEIVE_DECKS } from '../actions';
+import { RECEIVE_DECKS, ADD_NEW_CARD } from '../actions';
 
 export default function decks(state = {}, action) {
   switch (action.type) {
@@ -6,6 +6,15 @@ export default function decks(state = {}, action) {
       return {
         ...state,
         ...action.decks
+      };
+    case ADD_NEW_CARD:
+      const { deckID, card } = action;
+      return {
+        ...state,
+        [deckID]: {
+          ...state[deckID],
+          questions: [...state[deckID].questions].concat(card)
+        }
       };
     default:
       return state;

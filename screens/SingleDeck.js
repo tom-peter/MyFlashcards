@@ -28,14 +28,14 @@ class SingleDeck extends Component {
         <Button
           icon="ios-chatboxes"
           label="Add a new card"
-          onPress={() => navigation.navigate('NewCard')}
+          onPress={() => navigation.navigate('NewCard', { deckID : deckID})}
           bgColor="#ff0000"
         />
 
         <Button
           icon="ios-chatboxes"
           label="Start quiz"
-          onPress={() => navigation.navigate('Quiz')}
+          onPress={() => navigation.navigate('Quiz', { deckID : deckID})}
         />
       </View>
     </View>
