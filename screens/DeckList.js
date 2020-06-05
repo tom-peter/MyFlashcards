@@ -7,6 +7,9 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { getDecks } from '../utils/api'
 import { receiveDecks } from '../actions'
 
+// dev: reset decks in async storage
+import { resetDecks } from '../utils/api'
+
 class DeckList extends Component {
   // state = {
   //   decks: null
@@ -14,6 +17,8 @@ class DeckList extends Component {
 
   componentDidMount() {
     
+    // dev: reset decks in async storage
+    // resetDecks()
     getDecks()
     .then((decks) => {
       this.props.dispatch(receiveDecks(decks))      

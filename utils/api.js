@@ -35,15 +35,16 @@ function generateUID() {
 export async function saveDeckTitle(title) {
   const id = generateUID();
   try {
-    await AsyncStorage.setItem(
+    await AsyncStorage.mergeItem(
       DECKS_STORAGE_KEY,
       JSON.stringify({
-        [generateUID()]: {
+        [id]: {
           title,
           questions: []
         }
       })
-    );
+    )
+    return id;
   } catch (error) {
     console.log(error);
   }
@@ -53,15 +54,24 @@ export async function addCardToDeck(id, card) {
   try {
     const deck = await getDeck(id);
 
-    await AsyncStorage.setItem(
+    await AsyncStorage.mergeItem(
       DECKS_STORAGE_KEY,
       JSON.stringify({
         [id]: {
-          ...deck,
           questions: [...deck.questions].concat(card)
         }
       })
     );
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function resetDecks() {
+  try {
+    await AsyncStorage.removeItem(DECKS_STORAGE_KEY);
+    await AsyncStorage.setItem(DECKS_STORAGE_KEY, JSON.stringify(decks));
+    return decks;
   } catch (error) {
     console.log(error);
   }
