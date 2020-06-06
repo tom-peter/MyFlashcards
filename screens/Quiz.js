@@ -1,26 +1,35 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, Dimensions } from 'react-native';
+import { connect } from 'react-redux';
 import CardFlip from 'react-native-card-flip';
 
+import Button from '../components/Button';
 
 
-class QuizCard extends Component {
+class Quiz extends Component {
   state = {
+    inProgress: true,
+    index: 0,
+    correct: 0,
+    incorrect: 0,
     qSide: true
   }
 
+  // ---------- QUIZ IN PROGRESS ----------
+
+  // Flip the card and set its state
   flipCard = () => {
     this.card.flip();
     this.setState((prevState) => ({ qSide: !prevState.qSide }));
   }
 
-  render() {
-
+  // Render view while the quiz is in progress
+  quizCard(currentQuestion, qActual, qTotal) {
     return (
       <View>
           <View style={styles.textContainer}>
             <Text style={styles.text}>Question:</Text>
-            <Text style={styles.text}>??? out of ZZZ</Text>
+            <Text style={styles.text}>{`${qActual} of ${qTotal}`}</Text>
           </View>
 
             <CardFlip 
@@ -34,13 +43,13 @@ class QuizCard extends Component {
                 activeOpacity={1}
                 style={[styles.card, styles.card1]}
                 onPress={this.flipCard}>
-                <Text style={styles.cardText}>Very-very-very very-very very-very-very very-very very-very-very long question?</Text>
+                <Text style={styles.cardText}>{currentQuestion.question}</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 activeOpacity={1}
                 style={[styles.card, styles.card2]}
                 onPress={this.flipCard}>
-                <Text style={styles.cardText}>CD</Text>
+                <Text style={styles.cardText}>{currentQuestion.answer}</Text>
               </TouchableOpacity>
             </CardFlip>
             
@@ -50,35 +59,120 @@ class QuizCard extends Component {
             </Text>
           </View>
 
+          <View style={styles.buttonContainer} >
+          <Button
+            icon="ios-checkmark"
+            label="Correct"
+            onPress={() => this.handleAnswer('correct')}
+          />
+          <Button
+            icon="ios-close"
+            label="Incorrect"
+            onPress={() => this.handleAnswer('incorrect')}
+            bgColor="#ff0000"
+          />
+        </View>
       </View>
       
     );
   }
-}
+
+  // Handle buttons during the quiz
+  handleAnswer(answer) {
+    const deckID = this.props.route.params.deckID;
+    const qTotal = this.props.decks[deckID].questions.length;
+
+    // correct or incorrect?
+    answer === 'correct'
+      ? this.setState((prevState) => ({ correct: prevState.correct + 1 }))
+      : this.setState((prevState) => ({ incorrect: prevState.incorrect + 1 }));
+
+    // is the answer is visible, flip the card back
+    !this.state.qSide && this.flipCard();
+      
+    // last question or not?
+    // if not, wait for the card to flip back to avoid showing the next answer
+    qTotal === this.state.index + 1
+      ? this.setState({ inProgress: false })
+      : setTimeout(() => { 
+          this.setState((prevState) => ({ index: prevState.index + 1 })) 
+        }, 166); 
+  }
 
 
-export default class Quiz extends Component {
-  // state = {
-  //   qSide: true
-  // }
+  // ---------- QUIZ IS FINISHED ----------  
 
+  // Render view when the quiz is finished
+  quizResult(qCorrect, qTotal) {
+
+    const qCorrectPerc = Math.round(qCorrect / qTotal * 10000) / 100;
+
+    return (
+      <View>
+          <View style={styles.textContainer}>
+            <Text style={styles.text}>Correct questions:</Text>
+            <Text style={styles.text}>{`${qCorrect} of ${qTotal}`}</Text>
+            <Text style={styles.text}>{` ${qCorrectPerc}%`}</Text>
+          </View>
+
+          <View style={styles.buttonContainer} >
+          <Button
+            icon="ios-checkmark"
+            label="Try again"
+            onPress={() => this.handleReset()}
+          />
+          <Button
+            icon="ios-close"
+            label="Go back"
+            onPress={() => this.props.navigation.goBack()}
+            bgColor="#ff0000"
+          />
+        </View>
+
+      </View>
+      
+    );
+  }
+
+  // Handle quiz reset
+  handleReset() {
+    this.setState({ 
+      inProgress: true,
+      index: 0,
+      correct: 0,
+      incorrect: 0
+    })
+  }
+
+
+  // ---------- RENDER ----------
 
   render() {
 
+    const { index } = this.state;
+    const deckID = this.props.route.params.deckID;
+    const title = this.props.decks[deckID].title;
+    const questions = this.props.decks[deckID].questions;
+    const qTotal = questions.length;
+    const currentQuestion = questions[index];
+
     return (
       <View style={styles.container}>
-        <QuizCard/>
 
-          <View>
-            <TouchableOpacity onPress={() => alert('click!')} >
-              <Text>Yes</Text>
-            </TouchableOpacity>
-          </View>
-      </View>
+        <View style={styles.textContainer}>
+          <Text style={styles.text}>{ `${title} deck` }</Text>
+        </View>
       
+        {this.state.inProgress && this.quizCard(currentQuestion, index + 1, qTotal)}
+
+        {!this.state.inProgress && this.quizResult(this.state.correct, qTotal)}
+        
+      </View>
     );
   }
 }
+
+// ---------- STYLESHEET ----------
 
 const styles = StyleSheet.create({
   container: {
@@ -95,7 +189,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 16,
     color: 'rgba(96,100,109, 1)',
-    lineHeight: 18,
+    lineHeight: 20,
     textAlign: 'center',
   },
   cardContainer: {
@@ -103,8 +197,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: Dimensions.get('window').width * 0.8,
     minHeight: 160,
-    marginTop: 0,
-    marginBottom: 0,
+    // marginTop: 0,
+    marginBottom: 10,
   },
   card: {
     width: Dimensions.get('window').width * 0.8,
@@ -128,5 +222,15 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     textAlign: 'center',
   },
-
+  buttonContainer: {
+    alignItems: 'center',
+    marginTop: 10,
+    marginBottom: 20,
+  },
 })
+
+function mapStateToProps(state) {
+  return ( state === null ) ? { decks: null } : { decks: state };
+}
+
+export default connect(mapStateToProps)(Quiz)
