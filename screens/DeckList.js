@@ -61,7 +61,7 @@ class DeckList extends Component {
   return (
     <View style={styles.container}>
       <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-        <View style={styles.welcomeContainer}>
+        <View style={styles.textContainer}>
           <Text style={styles.getStartedText}>Decks</Text>
           <Text style={styles.getStartedText}>Select a deck or create a new one.</Text>
         </View>
@@ -94,11 +94,14 @@ const styles = StyleSheet.create({
   contentContainer: {
     paddingTop: 30,
   },
-  welcomeContainer: {
+  
+  textContainer: {
     alignItems: 'center',
     marginTop: 10,
     marginBottom: 20,
   },
+
+  
   welcomeImage: {
     width: 100,
     height: 80,
