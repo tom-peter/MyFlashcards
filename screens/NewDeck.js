@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Ionicons } from '@expo/vector-icons';
 import { StyleSheet, Text, TextInput, View, Keyboard, KeyboardAvoidingView } from 'react-native';
 import { connect } from 'react-redux';
 
@@ -54,28 +53,28 @@ class NewDeck extends Component {
 
   render() {
   
-  return (
-    <View style={styles.container}>
-    <View style={styles.textContainer}>
-      <Text style={styles.text}>What should be the title of your new deck?</Text>
-    </View>
-    <KeyboardAvoidingView style={styles.inputContainer} behavior='padding'>
-        <TextInput
-          style={styles.input}
-          value={this.state.title}
-          onChangeText={this.handleInput}
-          multiline={false}
-          placeholder="Deck title"
-          autoFocus={true}
-          returnKeyType="done"
-          onSubmitEditing={Keyboard.dismiss}
-        />
-      </KeyboardAvoidingView>
+    return (
+      <View style={styles.container}>
+      <View style={styles.textContainer}>
+        <Text style={styles.text}>What should be the title of your new deck?</Text>
+      </View>
+      <KeyboardAvoidingView style={styles.inputContainer} behavior='padding'>
+          <TextInput
+            style={styles.input}
+            value={this.state.title}
+            onChangeText={this.handleInput}
+            multiline={false}
+            placeholder="Deck title"
+            autoFocus={true}
+            returnKeyType="done"
+            onSubmitEditing={Keyboard.dismiss}
+          />
+        </KeyboardAvoidingView>
 
-      { this.submitButton() }
+        { this.submitButton() }
 
-  </View>
-  );
+      </View>
+    );
   }
 }
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { HeaderBackButton } from '@react-navigation/stack';
 
@@ -21,35 +21,31 @@ class SingleDeck extends Component {
       headerLeft: () => (<HeaderBackButton onPress={() => navigation.navigate('Decks')} />) 
     })
 
-    // console.log('single props: ', this.props);
-    console.log('single / deckID: ', deckID);
-    console.log('single deck: ', deck);
-
-  return (
-    <View style={styles.container}>
-      <View style={styles.textContainer}>
-        <Text style={styles.text}>You have {deck.questions.length} card{deck.questions.length > 1 && 's'} in the {deck.title} deck.</Text>
+    return (
+      <View style={styles.container}>
+        <View style={styles.textContainer}>
+          <Text style={styles.text}>You have {deck.questions.length} card{deck.questions.length > 1 && 's'} in the {deck.title} deck.</Text>
+        </View>
+        <View style={styles.buttonContainer} >
+          <Button
+            icon="md-add"
+            label="Add a new card"
+            onPress={() => navigation.navigate('NewCard', { deckID : deckID})}
+            color="#fff"
+            bgColor="#66f"
+          />
+        </View>
+        <View style={styles.buttonContainer} >
+          <Button
+            icon="ios-school"
+            label="Start quiz"
+            onPress={() => navigation.navigate('Quiz', { deckID : deckID})}
+          />
+        </View>
       </View>
-      <View style={styles.buttonContainer} >
-        <Button
-          icon="md-add"
-          label="Add a new card"
-          onPress={() => navigation.navigate('NewCard', { deckID : deckID})}
-          color="#fff"
-          bgColor="#66f"
-        />
-      </View>
-      <View style={styles.buttonContainer} >
-        <Button
-          icon="ios-school"
-          label="Start quiz"
-          onPress={() => navigation.navigate('Quiz', { deckID : deckID})}
-        />
-      </View>
-    </View>
-    
-  );
-}
+      
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -77,8 +73,6 @@ const styles = StyleSheet.create({
 })
 
 function mapStateToProps(state) {
-  console.log('mapStateToProps: ', state);
-
   return ( state === null ) ? { decks: null } : { decks: state };
 }
 

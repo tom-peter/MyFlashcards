@@ -99,7 +99,7 @@ class Quiz extends Component {
       ? this.setState((prevState) => ({ correct: prevState.correct + 1 }))
       : this.setState((prevState) => ({ incorrect: prevState.incorrect + 1 }));
 
-    // is the answer is visible, flip the card back
+    // if the answer is visible, flip the card back
     !this.state.qSide && this.flipCard();
       
     // last question or not?
@@ -121,13 +121,13 @@ class Quiz extends Component {
 
     return (
       <View>
-          <View style={styles.textContainer}>
-            <Text style={styles.text}>Correct questions:</Text>
-            <Text style={styles.text}>{`${qCorrect} out of ${qTotal}`}</Text>
-            <Text style={styles.text}>{` ${qCorrectPerc}%`}</Text>
-          </View>
+        <View style={styles.textContainer}>
+          <Text style={styles.text}>Correct questions:</Text>
+          <Text style={styles.text}>{`${qCorrect} out of ${qTotal}`}</Text>
+          <Text style={styles.text}>{` ${qCorrectPerc}%`}</Text>
+        </View>
 
-          <View style={styles.buttonContainer} >
+        <View style={styles.buttonContainer} >
           <Button
             icon="ios-redo"
             label="Restart Quiz"
@@ -140,9 +140,7 @@ class Quiz extends Component {
             onPress={() => this.props.navigation.goBack()}
           />
         </View>
-
       </View>
-      
     );
   }
 

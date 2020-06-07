@@ -23,7 +23,6 @@ export default class App extends Component {
   }
 
   render() {
-
     return (
       <Provider store={createStore(reducer)}>
         <View style={styles.container}>
@@ -48,8 +47,6 @@ export default class App extends Component {
       </Provider>
     );
   }
-
-  // }
 }
 
 const styles = StyleSheet.create({

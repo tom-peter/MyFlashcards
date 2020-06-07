@@ -10,6 +10,5 @@ export default {
         NewDeck: 'newdeck',        
       },
     },
-    SingleDeck: 'singledeck'
   },
 };

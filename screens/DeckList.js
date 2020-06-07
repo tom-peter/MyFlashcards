@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { ScrollView, RectButton } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -9,7 +9,7 @@ import { receiveDecks } from '../actions'
 import Colors from '../constants/Colors'
 
 // DEV: reset decks in async storage
-import { resetDecks, checkAsyncStorage } from '../utils/api'
+// import { resetDecks, checkAsyncStorage } from '../utils/api'
 
 class DeckList extends Component {
 
@@ -21,8 +21,9 @@ class DeckList extends Component {
     .then((decks) => {
       this.props.dispatch(receiveDecks(decks))      
     });
-    
-    checkAsyncStorage();
+   
+    // DEV: log async storage to console
+    // checkAsyncStorage();
   }
 
   listDecks() {
@@ -55,30 +56,24 @@ class DeckList extends Component {
 
   render() {
 
-  console.log('DeckList props: ', this.props);
-  const { navigation, decks } = this.props;
+    const { navigation, decks } = this.props;
 
+    return (
+      <View style={styles.container}>
+        <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+          <View style={styles.textContainer}>
+            <Text style={styles.h2}>Decks</Text>
+            <Text style={styles.text}>Select a deck or create a new one.</Text>
+          </View>
 
-  return (
-    <View style={styles.container}>
-      <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-        <View style={styles.textContainer}>
-          <Text style={styles.h2}>Decks</Text>
-          <Text style={styles.text}>Select a deck or create a new one.</Text>
-        </View>
+          {decks !== null && this.listDecks()}
 
-        {decks !== null && this.listDecks()}
-
-      </ScrollView>
-    </View>
-  );
+        </ScrollView>
+      </View>
+    );
 
   }
 }
-
-DeckList.navigationOptions = {
-  header: null,
-};
 
 const styles = StyleSheet.create({
   container: {
@@ -133,7 +128,6 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state) {
-  console.log('mapStateToProps: ', state);
   return ( state === null ) ? { decks: null } : { decks: state };
 }
 

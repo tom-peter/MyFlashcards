@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, TextInput, View, Keyboard, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, TextInput, View, Keyboard, KeyboardAvoidingView } from 'react-native';
 import { connect } from 'react-redux';
 
 import { addNewCard } from '../actions';
@@ -44,7 +44,6 @@ class NewCard extends Component {
     addCardToDeck(deckID, card)
     .then(() => {
       // add card to redux store
-      console.log('handlesubmit: ', this.props)
       this.props.dispatch(addNewCard(deckID, card));
     })
     // reset fields and go back
@@ -53,8 +52,6 @@ class NewCard extends Component {
   }
 
   render() {
-
-    console.log('NewCard / state:', this.state )
 
     return (
       <View style={styles.container}>

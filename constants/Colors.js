@@ -16,10 +16,10 @@ export default {
   mainColor1,
   inputBorder,
   buttonBg,
-
   tabIconDefault: '#ccc',
   tabIconSelected: tintColor,
   tabBar: '#fefefe',
+
   errorBackground: 'red',
   errorText: '#fff',
   warningBackground: '#EAEB5E',
