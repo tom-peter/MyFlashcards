@@ -3,23 +3,23 @@ import { Ionicons } from '@expo/vector-icons';
 import { StyleSheet, Text, View } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 
-// import Colors from '../constants/Colors';
+import Colors from '../constants/Colors';
 
 
 export default function Button({ icon, label, onPress, color, bgColor }) {
   const colorStyles = { 
-    color: color || '#000000',
-    backgroundColor: bgColor || '#33ff33'
+    color: color || Colors.fontWhite,
+    backgroundColor: bgColor || Colors.buttonBg
   }
 
   return (
     <RectButton style={[styles.button, colorStyles]} onPress={onPress}>
       <View style={{ flexDirection: 'row' }}>
         <View style={styles.buttonIconContainer}>
-          <Ionicons name={icon} size={22} color="rgba(0,0,0,0.35)" />
+          <Ionicons name={icon} size={22} color={colorStyles.color} />
         </View>
         <View style={styles.buttonTextContainer}>
-          <Text style={styles.buttonText}>{label}</Text>
+          <Text style={[styles.buttonText, colorStyles]}>{label}</Text>
         </View>
       </View>
     </RectButton>
@@ -28,8 +28,7 @@ export default function Button({ icon, label, onPress, color, bgColor }) {
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: '#33ff33',
-    marginVertical: 10,
+    marginVertical: 20,
     paddingLeft: 20,
     paddingRight: 30,
     paddingVertical: 15,
@@ -38,6 +37,7 @@ const styles = StyleSheet.create({
     borderColor: '#ededed',
   },
   buttonIconContainer: {
+    justifyContent: 'center',
     marginRight: 12,
   },
   buttonText: {

@@ -6,11 +6,12 @@ import { connect } from 'react-redux';
 import { addNewDeck } from '../actions';
 import { saveDeckTitle } from '../utils/api';
 import Button from '../components/Button';
-
+import Colors from '../constants/Colors'
 
 class NewDeck extends Component {
   state = {
-    title: ''
+    title: '',
+    deckID: null
   }
 
   // handle input field
@@ -25,7 +26,6 @@ class NewDeck extends Component {
             icon="md-add"
             label="Create new deck"
             onPress={this.handleSubmit}
-            bgColor="#00ff00"
           />
         </View>
       )
@@ -41,10 +41,15 @@ class NewDeck extends Component {
     .then((id) => {
       // add deck to redux store
       this.props.dispatch(addNewDeck(id, title));
+      this.setState({ deckID: id });
     })
-    // reset fields and go back
-    this.setState({ title: '' });
-    this.props.navigation.goBack();
+    .then(() => {
+      // reset fields and go to the new deck
+      this.setState({ title: '' });
+      this.state.deckID 
+        ? this.props.navigation.navigate('SingleDeck', { deckID : this.state.deckID})
+        : this.props.navigation.goBack();
+    })   
   }
 
   render() {
@@ -77,7 +82,7 @@ class NewDeck extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: Colors.bgWhite,
   },
   textContainer: {
     alignItems: 'center',
@@ -87,8 +92,8 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 16,
-    color: 'rgba(96,100,109, 1)',
-    lineHeight: 18,
+    color: Colors.fontGrey,
+    lineHeight: 20,
     textAlign: 'center',
   },
   inputContainer: {
@@ -97,10 +102,9 @@ const styles = StyleSheet.create({
   },
   input: {
     fontSize: 18,
-    // margin: 15,
     borderWidth: 1,
     borderRadius: 5,
-    borderColor: '#999999',
+    borderColor: Colors.inputBorder,
     padding: 10,
   },
   buttonContainer: {

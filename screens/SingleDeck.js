@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { connect } from 'react-redux';
+import { HeaderBackButton } from '@react-navigation/stack';
 
 import Button from '../components/Button';
+import Colors from '../constants/Colors'
 
 class SingleDeck extends Component {
 
@@ -13,7 +15,11 @@ class SingleDeck extends Component {
     const deck = decks[deckID];
 
     // set the header based on the deck name
-    navigation.setOptions({ title: `${deck.title} deck` })
+    // set the back button to go back to DeckList, even if came from NewDeck
+    navigation.setOptions({ 
+      title: `${deck.title} deck`,
+      headerLeft: () => (<HeaderBackButton onPress={() => navigation.navigate('Decks')} />) 
+    })
 
     // console.log('single props: ', this.props);
     console.log('single / deckID: ', deckID);
@@ -21,19 +27,21 @@ class SingleDeck extends Component {
 
   return (
     <View style={styles.container}>
-      <View>
-        <Text style={styles.buttonText}>{deck.questions.length} card{deck.questions.length > 1 && 's'} in the deck</Text>
+      <View style={styles.textContainer}>
+        <Text style={styles.text}>You have {deck.questions.length} card{deck.questions.length > 1 && 's'} in the {deck.title} deck.</Text>
       </View>
       <View style={styles.buttonContainer} >
         <Button
-          icon="ios-chatboxes"
+          icon="md-add"
           label="Add a new card"
           onPress={() => navigation.navigate('NewCard', { deckID : deckID})}
-          bgColor="#ff0000"
+          color="#fff"
+          bgColor="#66f"
         />
-
+      </View>
+      <View style={styles.buttonContainer} >
         <Button
-          icon="ios-chatboxes"
+          icon="ios-school"
           label="Start quiz"
           onPress={() => navigation.navigate('Quiz', { deckID : deckID})}
         />
@@ -47,18 +55,29 @@ class SingleDeck extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: Colors.bgWhite,
+  },
+  textContainer: {
+    alignItems: 'center',
+    marginHorizontal: 20,
+    marginTop: 30,
+    marginBottom: 20,
+  },
+  text: {
+    fontSize: 16,
+    color: Colors.fontGrey,
+    lineHeight: 20,
+    textAlign: 'center',
   },
   buttonContainer: {
     alignItems: 'center',
     marginTop: 10,
-    marginBottom: 20,
+    marginBottom: 10,
   },
 })
 
 function mapStateToProps(state) {
   console.log('mapStateToProps: ', state);
-  
 
   return ( state === null ) ? { decks: null } : { decks: state };
 }

@@ -12,6 +12,7 @@ import LinkingConfiguration from './navigation/LinkingConfiguration';
 import SingleDeck from './screens/SingleDeck';
 import NewCard from './screens/NewCard';
 import Quiz from './screens/Quiz';
+import Colors from './constants/Colors'
 
 const Stack = createStackNavigator();
 
@@ -29,7 +30,7 @@ export default function App(props) {
             <Stack.Navigator
               screenOptions={{
                 headerStyle: {
-                  backgroundColor: '#ff6600',
+                  backgroundColor: Colors.mainColor1,
                 },
                 headerTitleAlign: 'center',
                 headerTintColor: '#ffffff'
@@ -50,6 +51,6 @@ export default function App(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: Colors.bgWhite,
   },
 });

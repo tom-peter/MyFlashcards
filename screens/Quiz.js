@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import CardFlip from 'react-native-card-flip';
 
 import Button from '../components/Button';
-
+import Colors from '../constants/Colors'
 
 class Quiz extends Component {
   state = {
@@ -25,11 +25,13 @@ class Quiz extends Component {
 
   // Render view while the quiz is in progress
   quizCard(currentQuestion, qActual, qTotal) {
+    let qRemaining = qTotal - qActual + 1;
+
     return (
       <View>
           <View style={styles.textContainer}>
-            <Text style={styles.text}>Question:</Text>
-            <Text style={styles.text}>{`${qActual} of ${qTotal}`}</Text>
+            <Text style={styles.text}>Questions remaining:</Text>
+            <Text style={styles.text}>{`${qRemaining} (out of ${qTotal})`}</Text>
           </View>
 
             <CardFlip 
@@ -57,6 +59,10 @@ class Quiz extends Component {
             <Text style={styles.text}>Tap the card to see the 
               { this.state.qSide ? ' answer.' : ' question.' }
             </Text>
+          </View>
+
+          <View style={styles.textContainer}>
+            <Text style={styles.text}>Please mark your guess:</Text>
           </View>
 
           <View style={styles.buttonContainer} >
@@ -111,21 +117,21 @@ class Quiz extends Component {
       <View>
           <View style={styles.textContainer}>
             <Text style={styles.text}>Correct questions:</Text>
-            <Text style={styles.text}>{`${qCorrect} of ${qTotal}`}</Text>
+            <Text style={styles.text}>{`${qCorrect} out of ${qTotal}`}</Text>
             <Text style={styles.text}>{` ${qCorrectPerc}%`}</Text>
           </View>
 
           <View style={styles.buttonContainer} >
           <Button
-            icon="ios-checkmark"
-            label="Try again"
+            icon="ios-redo"
+            label="Restart Quiz"
             onPress={() => this.handleReset()}
+            bgColor="#ff0000"
           />
           <Button
-            icon="ios-close"
-            label="Go back"
+            icon="md-arrow-back"
+            label="Back to Deck"
             onPress={() => this.props.navigation.goBack()}
-            bgColor="#ff0000"
           />
         </View>
 
@@ -159,8 +165,8 @@ class Quiz extends Component {
     return (
       <View style={styles.container}>
 
-        <View style={styles.textContainer}>
-          <Text style={styles.text}>{ `${title} deck` }</Text>
+        <View style={[styles.textContainer, { marginTop: 20 }]}>
+          <Text style={styles.h2}>{ `${title} deck` }</Text>
         </View>
       
         {this.state.inProgress && this.quizCard(currentQuestion, index + 1, qTotal)}
@@ -178,17 +184,23 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: Colors.bgWhite,
   },
   textContainer: {
     alignItems: 'center',
     marginHorizontal: 20,
-    marginTop: 20,
-    marginBottom: 20,
+    marginTop: 10,
+    marginBottom: 10,
+  },
+  h2: {
+    fontSize: 18,
+    fontWeight: "700",
+    lineHeight: 20,
+    textAlign: 'center',
   },
   text: {
     fontSize: 16,
-    color: 'rgba(96,100,109, 1)',
+    color: Colors.fontGrey,
     lineHeight: 20,
     textAlign: 'center',
   },
@@ -208,14 +220,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 25,
     paddingVertical: 25,
 
-    backgroundColor: '#FE474C',
+    backgroundColor: Colors.mainColor1,
     borderRadius: 5,
   },
   card1: {
-    backgroundColor: '#FE474C',
+    backgroundColor: Colors.mainColor1,
   },
   card2: {
-    backgroundColor: '#FEB12C',
+    backgroundColor: '#6c6',
   },
   cardText: {
     fontSize: 20,

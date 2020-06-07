@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { addNewCard } from '../actions';
 import { addCardToDeck } from '../utils/api';
 import Button from '../components/Button';
+import Colors from '../constants/Colors'
 
 class NewCard extends Component {
   state = {
@@ -18,18 +19,17 @@ class NewCard extends Component {
 
   // show submit button only if field not empty
   submitButton = () => {
-    if (this.state.question !== '' && this.state.answer !== '') {
-      return (
-        <View style={styles.buttonContainer} >
-          <Button
-            icon="md-add"
-            label="Add card to the deck"
-            onPress={this.handleSubmit}
-            bgColor="#00ff00"
-          />
-        </View>
-      )
-    }
+    if ( ['', '\r', '\n'].includes(this.state.question) ) return;
+    if ( ['', '\r', '\n'].includes(this.state.answer) ) return;
+    return (
+      <View style={styles.buttonContainer} >
+        <Button
+          icon="md-add"
+          label="Add card to the deck"
+          onPress={this.handleSubmit}
+        />
+      </View>
+    );
   }
 
   // save data to async storage and redux store
@@ -53,6 +53,9 @@ class NewCard extends Component {
   }
 
   render() {
+
+    console.log('NewCard / state:', this.state )
+
     return (
       <View style={styles.container}>
         <KeyboardAvoidingView style={styles.inputContainer} behavior='padding'>
@@ -93,8 +96,8 @@ class NewCard extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    backgroundColor: '#fff',
+    alignItems: 'stretch',
+    backgroundColor: Colors.bgWhite,
   },
   inputContainer: {
     justifyContent: 'space-around'
@@ -104,7 +107,7 @@ const styles = StyleSheet.create({
     margin: 15,
     borderWidth: 1,
     borderRadius: 5,
-    borderColor: '#999999',
+    borderColor: Colors.inputBorder,
     padding: 10,
   },
   buttonContainer: {
