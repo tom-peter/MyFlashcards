@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-community/async-storage';
 
 import { decks } from './_DATA';
+import { NOTIFICATION_KEY } from './notifications'
 
 const DECKS_STORAGE_KEY = 'MyFlashcards:decks';
 
@@ -75,4 +76,13 @@ export async function resetDecks() {
   } catch (error) {
     console.log(error);
   }
+}
+
+export function checkAsyncStorage() {
+  AsyncStorage.getItem(DECKS_STORAGE_KEY)
+    .then(JSON.parse)
+    .then((data) => console.log(DECKS_STORAGE_KEY, ' : ', data));
+    AsyncStorage.getItem(NOTIFICATION_KEY)
+    .then(JSON.parse)
+    .then((data) => console.log(NOTIFICATION_KEY, ' : ', data));
 }

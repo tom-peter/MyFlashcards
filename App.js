@@ -1,12 +1,12 @@
-import * as React from 'react';
+import React, { Component } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'
-import reducer from './reducers'
 
-import useCachedResources from './hooks/useCachedResources';
+import { setLocalNotification } from './utils/notifications';
+import reducer from './reducers'
 import BottomTabNavigator from './navigation/BottomTabNavigator';
 import LinkingConfiguration from './navigation/LinkingConfiguration';
 import SingleDeck from './screens/SingleDeck';
@@ -16,12 +16,14 @@ import Colors from './constants/Colors'
 
 const Stack = createStackNavigator();
 
-export default function App(props) {
-  const isLoadingComplete = useCachedResources();
+export default class App extends Component {
 
-  if (!isLoadingComplete) {
-    return null;
-  } else {
+  componentDidMount() {
+    setLocalNotification();
+  }
+
+  render() {
+
     return (
       <Provider store={createStore(reducer)}>
         <View style={styles.container}>
@@ -46,6 +48,8 @@ export default function App(props) {
       </Provider>
     );
   }
+
+  // }
 }
 
 const styles = StyleSheet.create({

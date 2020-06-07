@@ -9,7 +9,7 @@ import { receiveDecks } from '../actions'
 import Colors from '../constants/Colors'
 
 // DEV: reset decks in async storage
-import { resetDecks } from '../utils/api'
+import { resetDecks, checkAsyncStorage } from '../utils/api'
 
 class DeckList extends Component {
 
@@ -22,6 +22,7 @@ class DeckList extends Component {
       this.props.dispatch(receiveDecks(decks))      
     });
     
+    checkAsyncStorage();
   }
 
   listDecks() {

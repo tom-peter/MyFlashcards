@@ -3,6 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View, Dimensions } from 'react-nati
 import { connect } from 'react-redux';
 import CardFlip from 'react-native-card-flip';
 
+import { clearLocalNotification, setLocalNotification } from '../utils/notifications';
 import Button from '../components/Button';
 import Colors from '../constants/Colors'
 
@@ -13,6 +14,11 @@ class Quiz extends Component {
     correct: 0,
     incorrect: 0,
     qSide: true
+  }
+
+  componentDidMount() {
+  	// clear the actual notification and set a new one for tomorrow
+		clearLocalNotification().then(setLocalNotification);
   }
 
   // ---------- QUIZ IN PROGRESS ----------
